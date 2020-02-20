@@ -35,6 +35,40 @@ sentences := coalbox.ToSentences(boundingBoxes)
     <img src="images/cat_sentences.png" />
 </p>
 
+# Quickstart
+
+Import:
+
+```
+import "github.com/siftrics/coalbox"
+```
+
+The function you will use:
+
+```
+func ToSentences(bbs []BoundingBox) []BoundingBox
+```
+
+The `BoundingBox` type:
+
+```
+type BoundingBox struct {
+	Text                                                 string
+	TopLeftX, TopLeftY, TopRightX, TopRightY             int
+	BottomLeftX, BottomLeftY, BottomRightX, BottomRightY int
+	Confidence                                           float64
+}
+```
+
+If you're working with `image.Rectangle`, two functions are exposed to help:
+
+```
+func BoxFromRectangle(r image.Rectangle) BoundingBox
+func BoxesFromRectangles(rs []image.Rectangle) []BoundingBox
+```
+
+In the resulting sentence-level bounding boxes, the `Text` field is creating by joining word-level bounding boxes with the space character, " ". The confidence field is the simple average of the word-level confidences.
+
 # Apache v2 License
 
 This repository is licensed under the Apache License, Version 2.0. You can view the full text of the license in the file named "LICENSE".
