@@ -1,6 +1,9 @@
-# Coalbox
+## [Coalbox](#overview)
 
 _coal_ &bull; _box_ &mdash; coalesce boxes.
+
+* [Quickstart](#quickstart)
+* [License](#license)
 
 The [Sight API](https://siftrics.com/) is a text recognition service. It provides word-level bounding boxes in response to uploaded PDF documents and images.
 
@@ -35,7 +38,7 @@ sentences := coalbox.ToSentences(boundingBoxes)
     <img src="images/cat_sentences.png" />
 </p>
 
-# Quickstart
+## [Quickstart](#quickstart)
 
 Import:
 
@@ -69,6 +72,6 @@ func BoxesFromRectangles(rs []image.Rectangle) []BoundingBox
 
 In the resulting sentence-level bounding boxes, the `Text` field is creating by joining word-level bounding boxes with the space character, " ". The confidence field is the simple average of the word-level confidences.
 
-# Apache v2 License
+## [Apache v2 License](#license)
 
 This repository is licensed under the Apache License, Version 2.0. You can view the full text of the license in the file named "LICENSE".
