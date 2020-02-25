@@ -6,7 +6,7 @@ import (
 )
 
 func ToSentences(bbs []BoundingBox) []BoundingBox {
-	return ToSentencesUsingRatios(bbs, 1.0, 0.5)
+	return ToSentencesUsingRatios(bbs, 0.25, 0.5)
 }
 
 type taggedBoundingBox struct {
@@ -86,6 +86,7 @@ func ToSentencesUsingRatios(bbs []BoundingBox, spaceRatio, overlapRatio float64)
 		}
 		tagFountain++
 	}
+
 	tag2TopY := make(map[int]int)
 	for i, _ := range taggedBbs {
 		if _, ok := tag2TopY[taggedBbs[i].tag]; ok {
@@ -103,10 +104,17 @@ func ToSentencesUsingRatios(bbs []BoundingBox, spaceRatio, overlapRatio float64)
 	sort.Slice(
 		taggedBbs,
 		func(i, j int) bool {
-			if taggedBbs[i].tag == taggedBbs[j].tag {
-				return min(taggedBbs[i].TopLeftX, taggedBbs[i].BottomLeftX) < min(taggedBbs[j].TopLeftX, taggedBbs[j].BottomLeftX)
+			if tag2TopY[taggedBbs[i].tag] < tag2TopY[taggedBbs[j].tag] {
+				return true
+			} else if tag2TopY[taggedBbs[i].tag] > tag2TopY[taggedBbs[j].tag] {
+				return false
 			}
-			return tag2TopY[taggedBbs[i].tag] < tag2TopY[taggedBbs[j].tag]
+			if taggedBbs[i].tag < taggedBbs[j].tag {
+				return true
+			} else if taggedBbs[i].tag > taggedBbs[j].tag {
+				return false
+			}
+			return min(taggedBbs[i].TopLeftX, taggedBbs[i].BottomLeftX) < min(taggedBbs[j].TopLeftX, taggedBbs[j].BottomLeftX)
 		},
 	)
 	sentences := make([]BoundingBox, len(tag2TopY), len(tag2TopY))
